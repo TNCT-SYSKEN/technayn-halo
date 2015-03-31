@@ -123,7 +123,7 @@
 			text.set({
 				x: CONSTANT.SIZE.width/2,
 				y: 80,
-				text: "てくにゃんを連打しろ！！",
+				text: "てくにゃんを喜ばせろ!!!!",
 				font: "50px メイリオ",
 				color: "#FFF",
 				textAlign: "center"
@@ -131,16 +131,16 @@
 
 			var technyan = technyans.normal;
 
-			//var instance = createjs.Sound.createInstance();
-
 			// てくにゃんをクリックした時の効果
 			technyan.addEventListener("click", function(){
-				container.removeChild(text);
+				halo.alpha += 0.12;
+				if ( halo.alpha >= 0.3 ) {
+					container.removeChild(text);	
+				}
 				createjs.Tween.get(technyan, {loop: false, ignoreGlobalPause: false})
 					.to({scaleX: 0.95, scaleY: 0.95}, 50)
 					.to({scaleX: 1.0, scaleY: 1.0}, 100);
-					 halo.alpha += 0.12;
-					 console.log(flag);
+				
 			});
 
 			var flag = true;

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<div id="jack">
+	<div id="times" onclick="$('#jack').remove();">どうでもいいからSYSKEN ONLINEを見せろ</div>
+	<iframe src="/index.html" id="technyan"></iframe>
+</div>
+<style type="text/css">
+	#jack {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.7);
+	}
+	#technyan {
+		border: 0;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+		width: 640px;
+		height: 360px;
+		overflow: hidden;
+	}
+	#times {
+		font-weight: bold;
+		color: #FFF;
+		position: absolute;
+		width: 400px;
+		background: #000;
+		line-height: 80px;
+		top: 80%;
+		left: 50%;
+		margin-left: -200px;
+		text-align: center;
+		cursor: pointer;
+	}
+</style>
+<script type="text/javascript" src="./lib/jquery-1.11.2.js"></script>
+</body>
+</html>
