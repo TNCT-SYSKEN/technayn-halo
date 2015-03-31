@@ -5,8 +5,8 @@
 	// 定数定義
 	var CONSTANT = {
 		SIZE: {
-			width: 1920,
-			height: 1080
+			width: 1280,
+			height: 720
 		},
 		fps: 30,
 		SCREEN: {
@@ -16,7 +16,10 @@
 	};
 
 	var manifest = [
-		{}
+		{id: "normal", src: "/assets/img/technyan-normal.png"},
+		{id: "angry", src: "/assets/img/technyan-angry.png"},
+		{id: "smile", src: "/assets/img/technyan-smile.png"},
+		{id: "back", src: "/assets/img/back.png"},
 	];
 
 	var _stage, _load;
@@ -96,15 +99,48 @@
 
 			// 黒色の背景
 			var back = new createjs.Shape();
-			back.graphics.f("#ccc").r(0, 0, CONSTANT.SIZE.width, CONSTANT.SIZE.height);
+			back.graphics.f("#000000").r(0, 0, CONSTANT.SIZE.width, CONSTANT.SIZE.height);
 			back.set({x: 0, y: 0});
-			var text = new createjs.Text("よみこみかんりょう", "48px PixelMplus12", "#000");
-			text.set({
-				x: CONSTANT.SIZE.width - text.getMeasuredWidth() - 10,
-				y :CONSTANT.SIZE.height - text.getMeasuredHeight() - 50,
+
+			var halo = new createjs.Bitmap("/assets/img/back.png");
+			halo.regX = 960;
+			halo.regY = 960;
+			halo.set({
+				regX: 640, regY: 640, x: 640, y: 440, scaleX: 1.5, scaleY: 1.5,
+				alpha: 0
+			})
+			createjs.Tween.get(halo, {loop: true, ignoreGlobalPause: false})
+				.to({rotation:360}, 10000);
+
+			var technyans = {
+				normal: new createjs.Bitmap("/assets/img/technyan-normal.png"),
+				angry:  new createjs.Bitmap("/assets/img/technyan-angry.png"),
+				smile:  new createjs.Bitmap("/assets/img/technyan-smile.png")
+			};
+
+			var technyan = technyans.normal;
+
+			technyan.addEventListener("click", function(){
+				createjs.Tween.get(technyan, {loop: false, ignoreGlobalPause: false})
+					.to({scaleX: 0.95, scaleY: 0.95}, 20)
+					.to({scaleX: 1.0, scaleY: 1.0}, 50);
+
+					 halo.alpha += 0.15;
 			});
 
-			container.addChild(back, text);
+			createjs.Ticker.addEventListener("tick", function(evt) {
+				container.removeChild(technyan);
+				if ( halo.alpha > 0 ) {
+					halo.alpha -= 0.02;
+				}
+				if ( halo.alpha > 1 ) {
+					technyan = technyans.smile;
+				}
+				technyan.set({ regX: 270, regY: 270, x: 640, y: 440 });
+				container.addChild(technyan);
+			});
+
+			container.addChild(back, halo);
 
 			return container;
 		}
