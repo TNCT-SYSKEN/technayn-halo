@@ -20,6 +20,7 @@
 		{id: "angry", src: "/assets/img/technyan-angry.png"},
 		{id: "smile", src: "/assets/img/technyan-smile.png"},
 		{id: "back", src: "/assets/img/back.png"},
+		{id: "sound", src: "/assets/sound/nc43138.wav"}
 	];
 
 	var _stage, _load;
@@ -113,30 +114,32 @@
 				.to({rotation:360}, 10000);
 
 			var technyans = {
-				normal: new createjs.Bitmap("/assets/img/technyan-normal.png"),
-				angry:  new createjs.Bitmap("/assets/img/technyan-angry.png"),
-				smile:  new createjs.Bitmap("/assets/img/technyan-smile.png")
+				normal: new createjs.Bitmap(preload.load.getResult("normal")),
+				angry:  new createjs.Bitmap(preload.load.getResult("angry")),
+				smile:  new createjs.Bitmap(preload.load.getResult("smile"))
 			};
 
 			var text = new createjs.Text();
 			text.set({
 				x: CONSTANT.SIZE.width/2,
 				y: 80,
-				text: "てくにゃんをクリック！",
-				font: "50px PixelMplus12",
+				text: "てくにゃんを連打しろ！！",
+				font: "50px メイリオ",
 				color: "#FFF",
 				textAlign: "center"
 			});
 
 			var technyan = technyans.normal;
 
+			//var instance = createjs.Sound.createInstance();
+
 			// てくにゃんをクリックした時の効果
 			technyan.addEventListener("click", function(){
 				container.removeChild(text);
 				createjs.Tween.get(technyan, {loop: false, ignoreGlobalPause: false})
-					.to({scaleX: 0.95, scaleY: 0.95}, 20)
-					.to({scaleX: 1.0, scaleY: 1.0}, 50);
-					 halo.alpha += 0.1;
+					.to({scaleX: 0.95, scaleY: 0.95}, 50)
+					.to({scaleX: 1.0, scaleY: 1.0}, 100);
+					 halo.alpha += 0.12;
 					 console.log(flag);
 			});
 
@@ -149,6 +152,14 @@
 				}
 				if ( halo.alpha > 1 ) {
 					technyan = technyans.smile;
+					if ( flag )	{
+						createjs.Sound.play("sound");
+						text.set({
+							text: "てくにゃんはお喜びになられている!!!",
+							color: "#000"
+						});
+						container.addChild(text);
+					}
 					flag = false;
 				}
 				technyan.set({ regX: 270, regY: 270, x: 640, y: 440 });
@@ -173,6 +184,9 @@
 		initalized: function() {
 			// Preload.js
 			this.load = new createjs.LoadQueue();
+
+			// Sound.js
+			this.load.installPlugin(createjs.Sound);
 
 			// 最大並列接続数
 			this.load.setMaxConnections(6);
