@@ -166,7 +166,7 @@
 							shadow: new createjs.Shadow("#fff", 0, 2, 5),
 						});
 						$.ajax({
-							url: "http://test.windyakin.net/technyan-halo/cgi/count.cgi?"+click,
+							url: "/technyan-halo/cgi/count.cgi?"+click,
 							type: "get",
 							dataType: "json"
 						})
