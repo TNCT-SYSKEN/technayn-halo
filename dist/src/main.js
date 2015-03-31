@@ -16,11 +16,11 @@
 	};
 
 	var manifest = [
-		{id: "normal", src: "/assets/img/technyan-normal.png"},
-		{id: "angry", src: "/assets/img/technyan-angry.png"},
-		{id: "smile", src: "/assets/img/technyan-smile.png"},
-		{id: "back", src: "/assets/img/back.png"},
-		{id: "sound", src: "/assets/sound/nc43138.wav"}
+		{id: "normal", src: "./assets/img/technyan-normal.png"},
+		{id: "angry", src: "./assets/img/technyan-angry.png"},
+		{id: "smile", src: "./assets/img/technyan-smile.png"},
+		{id: "back", src: "./assets/img/back.png"},
+		{id: "sound", src: "./assets/sound/nc43138.wav"}
 	];
 
 	var _stage, _load;
@@ -103,7 +103,7 @@
 			back.graphics.f("#000000").r(0, 0, CONSTANT.SIZE.width, CONSTANT.SIZE.height);
 			back.set({x: 0, y: 0});
 
-			var halo = new createjs.Bitmap("/assets/img/back.png");
+			var halo = new createjs.Bitmap(preload.load.getResult("back"));
 			halo.regX = 960;
 			halo.regY = 960;
 			halo.set({
@@ -124,12 +124,15 @@
 				x: CONSTANT.SIZE.width/2,
 				y: 80,
 				text: "てくにゃんを喜ばせろ!!!!",
-				font: "50px メイリオ",
+				font: "Bold 50px メイリオ",
 				color: "#FFF",
 				textAlign: "center"
 			});
 
 			var technyan = technyans.normal;
+			technyan.set({ regX: 270, regY: 270, x: 640, y: 440 });
+
+			var click = 0;
 
 			// てくにゃんをクリックした時の効果
 			technyan.addEventListener("click", function(){
@@ -140,33 +143,59 @@
 				createjs.Tween.get(technyan, {loop: false, ignoreGlobalPause: false})
 					.to({scaleX: 0.95, scaleY: 0.95}, 50)
 					.to({scaleX: 1.0, scaleY: 1.0}, 100);
-				
+				click++;
 			});
 
 			var flag = true;
 
 			createjs.Ticker.addEventListener("tick", function(evt) {
-				container.removeChild(technyan);
 				if ( halo.alpha > 0 && flag ) {
 					halo.alpha -= 0.02;
 				}
+				// てくにゃんが喜んだ
 				if ( halo.alpha > 1 ) {
-					technyan = technyans.smile;
 					if ( flag )	{
+						container.removeChild(technyan);
+						technyan = technyans.smile;
+						technyan.set({ regX: 270, regY: 270, x: 640, y: 440 });
+						container.addChild(technyan);
 						createjs.Sound.play("sound");
 						text.set({
 							text: "てくにゃんはお喜びになられている!!!",
-							color: "#000"
+							color: "#000",
+							shadow: new createjs.Shadow("#fff", 0, 2, 5),
 						});
+						$.ajax({
+							url: "http://test.windyakin.net/technyan-halo/cgi/count.cgi?"+click,
+							type: "get",
+							dataType: "json"
+						})
+						.done(function(data){
+							var count = new createjs.Text();
+							count.set({
+								x: CONSTANT.SIZE.width/2,
+								y: 500,
+								text: "本日お喜びになった回数 "+ data.happy + "回\n" +
+											"クリックされた回数 " + data.click + "回",
+								font: "Bold 50px メイリオ",
+								color: "#FFF",
+								shadow: new createjs.Shadow("#000000", 5, 5, 10),
+								textAlign: "center",
+								alpha: 0
+							});
+							container.addChild(count);
+							createjs.Tween.get(count, {loop: false, ignoreGlobalPause: false})
+								.wait(3000)
+								.to({alpha: 1}, 50)
+						});
+
 						container.addChild(text);
 					}
 					flag = false;
 				}
-				technyan.set({ regX: 270, regY: 270, x: 640, y: 440 });
-				container.addChild(technyan);
 			});
 
-			container.addChild(back, halo, text);
+			container.addChild(back, halo, text, technyan);
 
 			return container;
 		}
