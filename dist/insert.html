@@ -5,8 +5,11 @@
 </head>
 <body>
 <div id="jack">
-	<div id="times" onclick="$('#jack').remove();">どうでもいいからSYSKEN ONLINEを見せろ</div>
-	<iframe src="/index.html" id="technyan"></iframe>
+	<div id="box">
+		<iframe src="/index.html" id="technyan"></iframe>
+		<div id="description"><a href="//www.tsuyama-ct.ac.jp/technyan/">てくにゃんは津山工業高等専門学校のゆるキャラです</div>
+		<div id="close" onclick="$('#jack').remove();">どうでもいいからSYSKEN ONLINEを見せろ</div>
+	</div>
 </div>
 <style type="text/css">
 	#jack {
@@ -17,30 +20,40 @@
 		height: 100%;
 		background: rgba(0, 0, 0, 0.7);
 	}
-	#technyan {
-		border: 0;
+	#box {
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		margin: auto;
 		width: 640px;
-		height: 360px;
+		height: 500px;
+		margin: auto;		
+	}
+	#technyan {
+		border: 0;
+		margin: 0 auto 20px;
+		padding: 0;
+		width: 640px;
+		height: 370px;
 		overflow: hidden;
 	}
-	#times {
+	#close {
 		font-weight: bold;
 		color: #FFF;
-		position: absolute;
 		width: 400px;
+		margin: 50px auto;
 		background: #000;
 		line-height: 80px;
-		top: 80%;
-		left: 50%;
-		margin-left: -200px;
 		text-align: center;
 		cursor: pointer;
+	}
+	#description {
+		color: #FFF;
+		text-align: center;
+	}
+	#description a {
+		color: #FFF;
 	}
 </style>
 <script type="text/javascript" src="./lib/jquery-1.11.2.js"></script>

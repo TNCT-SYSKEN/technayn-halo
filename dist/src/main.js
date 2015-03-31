@@ -136,7 +136,7 @@
 
 			// てくにゃんをクリックした時の効果
 			technyan.addEventListener("click", function(){
-				halo.alpha += 0.12;
+				halo.alpha += 0.10;
 				if ( halo.alpha >= 0.3 ) {
 					container.removeChild(text);	
 				}
@@ -171,6 +171,8 @@
 							dataType: "json"
 						})
 						.done(function(data){
+							var counter = new createjs.Container();
+							counter.alpha = 0;
 							var count = new createjs.Text();
 							count.set({
 								x: CONSTANT.SIZE.width/2,
@@ -181,12 +183,17 @@
 								color: "#FFF",
 								shadow: new createjs.Shadow("#000000", 5, 5, 10),
 								textAlign: "center",
-								alpha: 0
 							});
-							container.addChild(count);
-							createjs.Tween.get(count, {loop: false, ignoreGlobalPause: false})
+							var box = new createjs.Shape();
+							box.graphics.f("#000000").r(0, 0, 800, 150);
+							box.set({x: 250, y: 480, alpha: 0.5});
+							counter.addChild(box, count);
+
+							createjs.Tween.get(counter, {loop: false, ignoreGlobalPause: false})
 								.wait(3000)
 								.to({alpha: 1}, 50)
+
+							container.addChild(counter);
 						});
 
 						container.addChild(text);
