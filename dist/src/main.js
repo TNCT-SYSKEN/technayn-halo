@@ -118,29 +118,44 @@
 				smile:  new createjs.Bitmap("/assets/img/technyan-smile.png")
 			};
 
+			var text = new createjs.Text();
+			text.set({
+				x: CONSTANT.SIZE.width/2,
+				y: 80,
+				text: "てくにゃんをクリック！",
+				font: "50px PixelMplus12",
+				color: "#FFF",
+				textAlign: "center"
+			});
+
 			var technyan = technyans.normal;
 
+			// てくにゃんをクリックした時の効果
 			technyan.addEventListener("click", function(){
+				container.removeChild(text);
 				createjs.Tween.get(technyan, {loop: false, ignoreGlobalPause: false})
 					.to({scaleX: 0.95, scaleY: 0.95}, 20)
 					.to({scaleX: 1.0, scaleY: 1.0}, 50);
-
-					 halo.alpha += 0.15;
+					 halo.alpha += 0.1;
+					 console.log(flag);
 			});
+
+			var flag = true;
 
 			createjs.Ticker.addEventListener("tick", function(evt) {
 				container.removeChild(technyan);
-				if ( halo.alpha > 0 ) {
+				if ( halo.alpha > 0 && flag ) {
 					halo.alpha -= 0.02;
 				}
 				if ( halo.alpha > 1 ) {
 					technyan = technyans.smile;
+					flag = false;
 				}
 				technyan.set({ regX: 270, regY: 270, x: 640, y: 440 });
 				container.addChild(technyan);
 			});
 
-			container.addChild(back, halo);
+			container.addChild(back, halo, text);
 
 			return container;
 		}
